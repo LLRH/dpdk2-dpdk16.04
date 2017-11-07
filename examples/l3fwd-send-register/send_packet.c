@@ -156,29 +156,29 @@ pkt_setup(struct rte_mbuf *m) {
     m->data_len = ret;
 }
 
-//TODO:发送函数
+//TODO:发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
 void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) {
+
+    //TODO:申请内存空间
     if (lcore_id < 0) {
         lcore_id = rte_lcore_id();
     }
-
     uint8_t socketid = rte_lcore_to_socket_id(lcore_id);
     struct lcore_conf *qconf = &lcore_conf[lcore_id];
-
     if (pktmbuf_pool[socketid] == NULL) {
         rte_exit(EXIT_FAILURE, "pktmbuf_pool[socketid]==NULL\n");
-    } else {
-        struct rte_mbuf *m = rte_pktmbuf_alloc(pktmbuf_pool[socketid]);
-
-        if (m == NULL) {
-            rte_exit(EXIT_FAILURE, "Allocate Failure\n");
-        }
-
-        pkt_setup(m);
-
-        send_single_packet(qconf, m, portid);
-        rte_pktmbuf_free(m);
     }
+    struct rte_mbuf *m = rte_pktmbuf_alloc(pktmbuf_pool[socketid]);
+    if (m == NULL) {
+        rte_exit(EXIT_FAILURE, "Allocate Failure\n");
+    }
+
+    //TODO:对内存数据进行修改
+    pkt_setup(m);
+
+    //TODO:发送数据包
+    send_single_packet(qconf, m, portid);
+    rte_pktmbuf_free(m);
 }
 
 
@@ -268,12 +268,3 @@ void inline send_mbuf_GET(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_
         rte_pktmbuf_free(m);
     }
 }
-
-
-
-
-
-
-
-
-
