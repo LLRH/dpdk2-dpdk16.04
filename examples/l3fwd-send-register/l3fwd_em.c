@@ -661,7 +661,7 @@ void *thread(void *arg)
 		printf("[3]Send GET packets!\n");
 		printf("[4]Send DATA packets!\n");
 		printf("[5]Send Nash_negotiation packets!\n");
-        printf("[6]【delete】Send REGISTER packets!");
+        printf("[6]【delete】Send REGISTER packets!\n");
 		printf("cmd:");
 		fflush(stdout);
 	
