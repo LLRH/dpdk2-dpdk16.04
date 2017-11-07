@@ -649,7 +649,7 @@ void *thread(void *arg)
 	unsigned lcore_id=*((unsigned *)arg);
 	
 	
-	printf("\n\033[\033[1;33;41m *************Enter**CoLoR***CMD************* \033[0m \n");
+	printf("\n\033[\033[1;33;41m IDEA*************Enter**CoLoR***CMD************* \033[0m \n");
 		
 	bool my_quit=false;
 		
