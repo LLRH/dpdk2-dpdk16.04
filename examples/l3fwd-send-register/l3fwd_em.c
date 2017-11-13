@@ -744,8 +744,8 @@ em_main_loop(__attribute__((unused)) void *dummy)
 			lcore_id, portid, queueid);
 	}
 	
-//--------20170313 温兴泵
-	
+	//--------20170313 温兴泵
+	//TODO:启动了一个线程，作为命令行的窗口，而且当逻辑核为1的时候启动该线程！
 	if(lcore_id==1)
 	{
 		int temp;
@@ -756,8 +756,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 			return 1;
 		}
 	}
-
-//----------------------------------	
+	//----------------------------------
 
 	while (!force_quit) {
 

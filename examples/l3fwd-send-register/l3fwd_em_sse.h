@@ -55,6 +55,8 @@ em_get_dst_port(const struct lcore_conf *qconf, struct rte_mbuf *pkt,
 	uint32_t tcp_or_udp;
 	uint32_t l3_ptypes;
 
+	printf("[From %s]??????????portid=%d\n",__func__,portid);
+
 	tcp_or_udp = pkt->packet_type & (RTE_PTYPE_L4_TCP | RTE_PTYPE_L4_UDP);
 	l3_ptypes = pkt->packet_type & RTE_PTYPE_L3_MASK;
 	if (tcp_or_udp && (l3_ptypes == RTE_PTYPE_L3_IPV4)) {
