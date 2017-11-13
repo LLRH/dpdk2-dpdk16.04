@@ -307,6 +307,7 @@ process_packet(struct rte_mbuf *pkt, uint16_t *dst_port)
 	te = _mm_loadu_si128((__m128i *)eth_hdr);
 	ve = val_eth[dst_port[0]];
 
+	//??????????????
 	rfc1812_process((struct ipv4_hdr *)(eth_hdr + 1), dst_port,
 			pkt->packet_type);
 
@@ -495,7 +496,6 @@ send_packets_multi(struct lcore_conf *qconf, struct rte_mbuf **pkts_burst,
 			for (m = j; m != j + k; m++)
 				rte_pktmbuf_free(pkts_burst[m]);
 				printf("[From %s]free a packet\n",__func__);
-
 	}
 }
 
