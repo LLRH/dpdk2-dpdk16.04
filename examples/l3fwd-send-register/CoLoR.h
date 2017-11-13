@@ -58,6 +58,11 @@ struct control_public_header {
 }__attribute__((__packed__));
 typedef struct control_public_header control_public_header_t;
 
+//TODO:注册包中TYPE字段的类型
+#define REGISTER_TYPE_ADD 0x01
+#define REGISTER_TYPE_DELETE 0x02
+#define REGISTER_TYPE_UPDATE 0x03
+
 #define L_SID_LENGTH 20
 struct control_register{
 	//SID内容

@@ -238,4 +238,6 @@ lpm_get_ipv4_l3fwd_lookup_struct(const int socketid);
 void *
 lpm_get_ipv6_l3fwd_lookup_struct(const int socketid);
 
+#include "CoLoR.h"
+
 #endif  /* __L3_FWD_H__ */

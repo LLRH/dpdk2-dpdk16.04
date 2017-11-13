@@ -642,6 +642,9 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
+
+
+
 void *thread(void *arg)
 {
 	printids("new thread");
@@ -683,7 +686,7 @@ void *thread(void *arg)
 				break;
 			
 			case 1:
-				send_mbuf(0,&mybuf,lcore_id);	
+                send_mbuf_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
 				//send_mbuf(1,&mybuf,lcore_id);
 				break;
 			case 0:

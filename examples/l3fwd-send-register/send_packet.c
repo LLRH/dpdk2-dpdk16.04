@@ -156,7 +156,8 @@ pkt_setup(struct rte_mbuf *m) {
     m->data_len = ret;
 }
 
-//TODO:发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
+//TODO: Demo函数
+//TODO: 发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
 void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) {
 
     //TODO:申请内存空间
@@ -181,6 +182,48 @@ void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) 
     rte_pktmbuf_free(m);
 }
 
+//TODO:发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
+void inline send_mbuf_register_add(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) {
+
+    //TODO:申请内存空间
+    if (lcore_id < 0) {
+        lcore_id = rte_lcore_id();
+    }
+    uint8_t socketid = rte_lcore_to_socket_id(lcore_id);
+    struct lcore_conf *qconf = &lcore_conf[lcore_id];
+    if (pktmbuf_pool[socketid] == NULL) {
+        rte_exit(EXIT_FAILURE, "pktmbuf_pool[socketid]==NULL\n");
+    }
+    struct rte_mbuf *m = rte_pktmbuf_alloc(pktmbuf_pool[socketid]);
+    if (m == NULL) {
+        rte_exit(EXIT_FAILURE, "Allocate Failure\n");
+    }
+
+    //TODO:对内存数据进行修改
+    pkt_setup(m);
+
+    //TODO:发送数据包
+    send_single_packet(qconf, m, portid);
+    rte_pktmbuf_free(m);
+}
+
+//TODO: 注册的类型 包类型:注册(0x01)，更新(0x02)，删除(0x03)
+void inline send_mbuf_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type){
+    switch (type){
+        case REGISTER_TYPE_ADD:
+            send_mbuf_register_add(portid,mbuf,lcore_id);
+            break;
+        case REGISTER_TYPE_DELETE:
+            break;
+        case  REGISTER_TYPE_UPDATE:
+            break;
+        default:
+            printf("[From %s]注册类型错误\n",__func__);
+    }
+
+
+
+}
 
 /*******************get**********************************/
 static int
@@ -225,7 +268,6 @@ pktgen_CoLoR_modify(struct rte_mbuf *m)
 	//The length of a pid is 4 byte! 
 }
 */
-
 
 static void
 pkt_setup_GET(struct rte_mbuf *m) {
