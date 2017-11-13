@@ -686,7 +686,7 @@ void *thread(void *arg)
 				break;
 			
 			case 1:
-                send_mbuf_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
+                send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
 				//send_mbuf(1,&mybuf,lcore_id);
 				break;
 			case 0:

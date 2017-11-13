@@ -45,5 +45,5 @@ DPDK版本为16.04的L3fwd程序的发包补丁
 @mubf 指向rte_mbuf结构体的指针
 @无返回值
 */
-extern inline void send_mbuf(uint8_t portid, struct rte_mbuf *mubf, unsigned lcore_id);
+/*extern inline void send_mbuf(uint8_t portid, struct rte_mbuf *mubf, unsigned lcore_id);*/
 #endif

@@ -68,19 +68,22 @@ uint64_t mysrand(int min, int max) {
 uint8_t l_sid_last[L_SID_LENGTH];
 
 static int
-pktgen_ctor_register(struct rte_mbuf *m) {
+pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
     int i = 0;
     control_register_t *control_register_hdr = \
         rte_pktmbuf_mtod_offset(m, control_register_t * ,
-                                sizeof(struct ether_hdr) + sizeof(struct ipv4_hdr) + sizeof(control_public_header_t));
+                                sizeof(struct ether_hdr) +
+                                sizeof(struct ipv4_hdr) +
+                                sizeof(control_public_header_t));
 
-    uint8_t n_sid[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
-
+    uint8_t n_sid[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1,
+                                 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
     for (i = 0; i < NID_LENGTH; i++) {
         n_sid[i] = mysrand(0x0, 0xFF);
     }
-    uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3, 0x0,
-                                   0x0, 0x0, 0x1};
+
+    uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2,
+                                   0x2, 0x2, 0x3, 0x3, 0x3, 0x3, 0x0, 0x0, 0x0, 0x1};
     for (i = 0; i < L_SID_LENGTH; i++) {
         l_sid[i] = mysrand('!', '~');
         l_sid_last[i] = l_sid[i];
@@ -89,8 +92,12 @@ pktgen_ctor_register(struct rte_mbuf *m) {
     memcpy(control_register_hdr->n_sid, n_sid, NID_LENGTH);
     memcpy(control_register_hdr->l_sid, l_sid, L_SID_LENGTH);
 
-    control_register_hdr->type = mysrand(1, 3);
-    uint8_t nid_s[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
+    //control_register_hdr->type = mysrand(1, 3);
+    //TODO:此为注册的类型
+    control_register_hdr->type = type;
+
+    uint8_t nid_s[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1,
+                                 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
     for (i = 0; i < NID_LENGTH; i++) {
         nid_s[i] = mysrand('!', '~');
     }
@@ -104,7 +111,7 @@ pktgen_ctor_register(struct rte_mbuf *m) {
     control_register_hdr->content_size = mysrand(0, 0xFFFF);
     control_register_hdr->content_classification = mysrand(1, 3);
 
-    //打印注册的SID
+ /*   //打印注册的SID
     switch (mysrand(1, 1)) {
         case 1:
             printf("Receving REGISTER ACK--STATE=[\033[1;31;46m SUCCESS \033[0m ]\n SID=");
@@ -118,7 +125,7 @@ pktgen_ctor_register(struct rte_mbuf *m) {
         case 4:
             printf("No Receiving REGISTER ACK--STATE=[\033[1;34;47m TIMEOUT \033[0m]\n SID=");
             break;
-    }
+    }*/
 
     for (i = 0; i < NID_LENGTH; i++) {
         printf("%2X:", n_sid[i]);
@@ -132,7 +139,6 @@ pktgen_ctor_register(struct rte_mbuf *m) {
             printf("\n");
         }
     }
-
     return sizeof(control_register_t);
 }
 
@@ -182,8 +188,30 @@ void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) 
     rte_pktmbuf_free(m);
 }
 
+//:TODO:数据内容结构体分装函数
+static void
+pkt_setup_REGISTER(struct rte_mbuf *m,uint8_t type) {
+    int ret = 0;
+
+    struct ether_hdr eth_hdr;
+    ret = pktgen_ctor_ether_header(&eth_hdr, m);
+
+    struct ipv4_hdr ipv4_hdr;
+    ret += pktgen_ctor_ip_header(&ipv4_hdr, m, TYPE_CONTROL);
+
+    ret += pktgen_ctor_control_public_header(m);
+    ret += pktgen_ctor_register(m,type);
+
+    m->nb_segs = 1;
+    m->next = NULL;
+    m->pkt_len = ret;
+    m->data_len = ret;
+}
+
+
 //TODO:发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
-void inline send_mbuf_register_add(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) {
+void inline
+send_mbuf_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type) {
 
     //TODO:申请内存空间
     if (lcore_id < 0) {
@@ -200,7 +228,7 @@ void inline send_mbuf_register_add(uint8_t portid, struct rte_mbuf *mbuf, unsign
     }
 
     //TODO:对内存数据进行修改
-    pkt_setup(m);
+    pkt_setup_REGISTER(m,type);
 
     //TODO:发送数据包
     send_single_packet(qconf, m, portid);
@@ -208,21 +236,8 @@ void inline send_mbuf_register_add(uint8_t portid, struct rte_mbuf *mbuf, unsign
 }
 
 //TODO: 注册的类型 包类型:注册(0x01)，更新(0x02)，删除(0x03)
-void inline send_mbuf_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type){
-    switch (type){
-        case REGISTER_TYPE_ADD:
-            send_mbuf_register_add(portid,mbuf,lcore_id);
-            break;
-        case REGISTER_TYPE_DELETE:
-            break;
-        case  REGISTER_TYPE_UPDATE:
-            break;
-        default:
-            printf("[From %s]注册类型错误\n",__func__);
-    }
-
-
-
+void inline send_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type){
+    send_mbuf_register(portid,mbuf,lcore_id,type);
 }
 
 /*******************get**********************************/
