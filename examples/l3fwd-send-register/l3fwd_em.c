@@ -659,12 +659,13 @@ void *thread(void *arg)
 	while(!force_quit && my_quit==false){
 		printf("______________________________\n");
 		printf("[0]Exit the programe!\n");
-		printf("[1]Send REGISTER packets!\n");
+		printf("[1]【add】Send REGISTER packets!\n");
 		printf("[2]Send ANNOUNCE packets!\n");
 		printf("[3]Send GET packets!\n");
 		printf("[4]Send DATA packets!\n");
 		printf("[5]Send Nash_negotiation packets!\n");
         printf("[6]【delete】Send REGISTER packets!\n");
+		printf("[7]【update】Send REGISTER packets!\n");
 		printf("cmd:");
 		fflush(stdout);
 	
@@ -674,9 +675,12 @@ void *thread(void *arg)
 	 	getchar();
 		struct rte_mbuf mybuf;
 		switch(command_flag){
+			case 7:
+				send_register(0,&mybuf,lcore_id,REGISTER_TYPE_UPDATE);
+				break;
             case 6:
-                printf("send the Register packet to delete a entry");
-
+				send_register(0,&mybuf,lcore_id,REGISTER_TYPE_DELETE);
+				break;
 			case 5:
 				printf("Send Nash_negotiation packets!");
 				break;

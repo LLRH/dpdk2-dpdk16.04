@@ -84,9 +84,16 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
 
     uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2,
                                    0x2, 0x2, 0x3, 0x3, 0x3, 0x3, 0x0, 0x0, 0x0, 0x1};
+
     for (i = 0; i < L_SID_LENGTH; i++) {
-        l_sid[i] = mysrand('!', '~');
-        l_sid_last[i] = l_sid[i];
+        //删除或者更新上一次的
+        if(type==REGISTER_TYPE_DELETE ||type==REGISTER_TYPE_UPDATE){
+            l_sid[i]=l_sid_last[i];
+        }else{
+            //REGISTER_TYPE_ADD
+            l_sid[i] = mysrand('!', '~');
+            l_sid_last[i] = l_sid[i];
+        }
     }
 
     memcpy(control_register_hdr->n_sid, n_sid, NID_LENGTH);
