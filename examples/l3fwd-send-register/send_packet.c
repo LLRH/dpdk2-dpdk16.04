@@ -142,6 +142,7 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
     return sizeof(control_register_t);
 }
 
+/*
 //:TODO:数据内容结构体分装函数
 static void
 pkt_setup(struct rte_mbuf *m) {
@@ -187,6 +188,7 @@ void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) 
     send_single_packet(qconf, m, portid);
     rte_pktmbuf_free(m);
 }
+*/
 
 //:TODO:数据内容结构体分装函数
 static void
