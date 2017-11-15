@@ -217,7 +217,6 @@ pkt_setup_REGISTER(struct rte_mbuf *m,uint8_t type) {
     m->data_len = ret;
 }
 
-
 //TODO:发送函数 ，想法是发送的时候带了数据的内容，这个需要优化一下
 void inline
 send_mbuf_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type) {
