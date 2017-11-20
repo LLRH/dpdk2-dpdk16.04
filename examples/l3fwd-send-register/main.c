@@ -839,6 +839,10 @@ main(int argc, char **argv)
 
 	/* init EAL */
 	ret = rte_eal_init(argc, argv);
+
+    FILE *log = fopen("dpdk.log", "a+");
+    rte_openlog_stream(log);
+
 	if (ret < 0)
 		rte_exit(EXIT_FAILURE, "Invalid EAL parameters\n");
 	argc -= ret;
