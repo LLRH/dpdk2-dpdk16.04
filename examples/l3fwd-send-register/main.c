@@ -841,7 +841,12 @@ main(int argc, char **argv)
 	ret = rte_eal_init(argc, argv);
 
     FILE *log = fopen("dpdk.log", "a+");
+    if(log == NULL){
+        printf("Cannot configure log\n");
+        return -1;
+    }
     rte_openlog_stream(log);
+
 
 	if (ret < 0)
 		rte_exit(EXIT_FAILURE, "Invalid EAL parameters\n");
