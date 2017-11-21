@@ -68,6 +68,9 @@
 
 #define IPV6_ADDR_LEN 16
 
+
+#define __USE_GNU
+#include <sched.h>
 #include <pthread.h>
 
 
@@ -648,19 +651,6 @@ void CPU_ZERO(cpu_set_t *set){
     int mask=0x00;
     *set=*((cpu_set_t*)&mask);
 };
-/*void CPU_SET(int cpu, cpu_set_t *set){
-    *set=(*set)|(cpu_set_t)cpu;
-};
-void CPU_CLR(int cpu, cpu_set_t *set){
-    *set=(*set)&(cpu_set_t)(~cpu);
-};
-int CPU_ISSET(int cpu, cpu_set_t *set){
-    if(*set&(cpu_set_t)cpu==(cpu_set_t)cpu){
-        return 1;
-    }else{
-        return 0;
-    }
-};*/
 
 void *thread(void *arg)
 {
