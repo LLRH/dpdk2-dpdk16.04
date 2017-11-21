@@ -113,7 +113,7 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
 
     //The following vaules are randomly generated.
     control_register_hdr->scope = mysrand(1, 4);
-    control_register_hdr->time_of_validity = mysrand(1, 365);
+    control_register_hdr->time_of_validity = mysrand(1, 0xFF);
     control_register_hdr->time_unit = mysrand(1, 7);
     control_register_hdr->content_size = mysrand(0, 0xFFFF);
     control_register_hdr->content_classification = mysrand(1, 3);
