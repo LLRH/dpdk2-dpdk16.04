@@ -647,10 +647,10 @@ void printids(const char *s)
 
 /*cpu_set_t  //是一个掩码数组，一共有1024位，每一位都可以对应一个cpu核心
 //以下宏，都是对这个掩码进行操作的。如果需要，一个进程是可以绑定多个cpu的。    */
-void CPU_ZERO(cpu_set_t *set){
+/*void CPU_ZERO(cpu_set_t *set){
     int mask=0x00;
     *set=*((cpu_set_t*)&mask);
-};
+};*/
 
 void *thread(void *arg)
 {
