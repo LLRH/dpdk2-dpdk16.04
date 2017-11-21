@@ -702,7 +702,7 @@ void *thread(void *arg)
 		switch(command_flag){
             case 9:
                 cycle=1;
-                scanf("%d",&cycle);
+                int temp=scanf("%d",&cycle);
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     cycle--;
