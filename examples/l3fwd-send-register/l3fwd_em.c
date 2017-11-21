@@ -648,9 +648,12 @@ void printids(const char *s)
 void *thread(void *arg)
 {
 	printids("new thread");
-	
+
+    //TODO:绑定CPU到某个逻辑核
+    cpu_set_t mask;
+
+
 	unsigned lcore_id=*((unsigned *)arg);
-	
 	
 	printf("\n\033[\033[1;33;41m IDEA*************Enter**CoLoR***CMD************* \033[0m \n");
 		
