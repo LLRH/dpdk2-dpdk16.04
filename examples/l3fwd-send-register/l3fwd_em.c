@@ -700,7 +700,8 @@ void *thread(void *arg)
 		struct rte_mbuf mybuf;
 		switch(command_flag){
             case 9:
-                int cycle=1;
+                uint16_t cycle;
+                cycle=1;
                 scanf("%d",&cycle);
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
