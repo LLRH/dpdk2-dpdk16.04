@@ -642,6 +642,7 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
+#define CPU_ZERO(cpusetp) cpusetp&0x00 //初始化为0
 
 
 
