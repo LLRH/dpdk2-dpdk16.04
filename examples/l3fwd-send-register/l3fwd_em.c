@@ -686,7 +686,7 @@ void *thread(void *arg)
 		printf("[5]Send Nash_negotiation packets!\n");
         printf("[6]【delete】Send REGISTER packets!\n");
 		printf("[7]【update】Send REGISTER packets!\n");
-		printf("[8] TEST CPU");
+		printf("[8] TEST CPU\n");
 		printf("cmd:");
 		fflush(stdout);
 
@@ -697,6 +697,7 @@ void *thread(void *arg)
 		struct rte_mbuf mybuf;
 		switch(command_flag){
 			case 8:
+				printf("Begin to TEST cpu\n top -H -p 30420\n use [F][space][Enter] to control it!");
 				while(!force_quit){
 					int a=0;
 					int b=0;
