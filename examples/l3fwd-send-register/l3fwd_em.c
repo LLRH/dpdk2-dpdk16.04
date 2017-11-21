@@ -659,7 +659,7 @@ void *thread(void *arg)
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
     _CPU_ZERO(&mask);
-	_CPU_SET(0x4, &mask);      //绑定cpu 1
+	_CPU_SET(0x5, &mask);      //绑定cpu 1
 	//0 代表对当前线程/进程进行设置。
 	if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
 	{
@@ -669,6 +669,8 @@ void *thread(void *arg)
 	}
 
 	unsigned lcore_id=*((unsigned *)arg);
+
+	printf("[from %s]The new thread in lcoreid=%u",__func__,lcore_id);
 
 	printf("\n\033[\033[1;33;41m IDEA*************Enter**CoLoR***CMD************* \033[0m \n");
 
