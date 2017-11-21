@@ -642,9 +642,24 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
-#define CPU_ZERO(cpusetp) cpusetp&0x00 //初始化为0
-
-
+/*cpu_set_t  //是一个掩码数组，一共有1024位，每一位都可以对应一个cpu核心
+//以下宏，都是对这个掩码进行操作的。如果需要，一个进程是可以绑定多个cpu的。    */
+void CPU_ZERO(cpu_set_t *set){
+    *set=0;
+};
+void CPU_SET(int cpu, cpu_set_t *set){
+    *set=(*set)|cpu;
+};
+void CPU_CLR(int cpu, cpu_set_t *set){
+    *set=(*set)&(~cpu);
+};
+int CPU_ISSET(int cpu, cpu_set_t *set){
+    if(*set&cpu==cpu){
+        return 1;
+    }else{
+        return 0;
+    }
+};
 
 void *thread(void *arg)
 {
