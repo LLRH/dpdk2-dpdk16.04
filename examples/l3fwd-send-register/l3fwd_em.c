@@ -698,9 +698,9 @@ void *thread(void *arg)
 		int res=scanf("%d",&command_flag);
 	 	getchar();
 		struct rte_mbuf mybuf;
+        int cycle;
 		switch(command_flag){
             case 9:
-                uint16_t cycle;
                 cycle=1;
                 scanf("%d",&cycle);
                 while(cycle>0){
