@@ -731,6 +731,7 @@ void *thread(void *arg)
 int
 em_main_loop(__attribute__((unused)) void *dummy)
 {
+	printids("em_main_loop");
 	struct rte_mbuf *pkts_burst[MAX_PKT_BURST];
 	unsigned lcore_id;
 	uint64_t prev_tsc, diff_tsc, cur_tsc;
