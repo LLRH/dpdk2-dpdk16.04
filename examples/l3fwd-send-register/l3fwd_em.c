@@ -686,6 +686,7 @@ void *thread(void *arg)
 		printf("[5]Send Nash_negotiation packets!\n");
         printf("[6]【delete】Send REGISTER packets!\n");
 		printf("[7]【update】Send REGISTER packets!\n");
+		printf("[8] TEST CPU");
 		printf("cmd:");
 		fflush(stdout);
 
@@ -695,6 +696,12 @@ void *thread(void *arg)
 	 	getchar();
 		struct rte_mbuf mybuf;
 		switch(command_flag){
+			case 8:
+				while(!force_quit){
+					int a=0;
+					int b=0;
+					a=a+b;
+				}
 			case 7:
 				send_register(0,&mybuf,lcore_id,REGISTER_TYPE_UPDATE);
 				break;
