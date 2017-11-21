@@ -658,7 +658,7 @@ void *thread(void *arg)
 
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
-    CPU_ZERO(&mask);
+    _CPU_ZERO(&mask);
 
 	unsigned lcore_id=*((unsigned *)arg);
 
