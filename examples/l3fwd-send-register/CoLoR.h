@@ -1,7 +1,7 @@
 #ifndef _CoLoR_H_
-#define _CoLoR_H_ 
+#define _CoLoR_H_
 
-#define CONTENTLEN 4 
+#define CONTENTLEN 4
 #define PUBKEYLEN 4
 
 typedef struct CoLoR_get
@@ -63,12 +63,21 @@ typedef struct control_public_header control_public_header_t;
 #define REGISTER_TYPE_UPDATE 0x02
 #define REGISTER_TYPE_DELETE 0x03
 
+//TODO:注册包中时间的单位
+#define REISTER_TIME_UNIT_SECOND    0x1
+#define REISTER_TIME_UNIT_MINITUE   0x2
+#define REISTER_TIME_UNIT_HOUR      0x3
+#define REISTER_TIME_UNIT_DAY       0x4
+#define REISTER_TIME_UNIT_WEEK      0x5
+#define REISTER_TIME_UNIT_MONTH     0x6
+#define REISTER_TIME_UNIT_YEAR      0x7
+
 #define L_SID_LENGTH 20
 struct control_register{
 	//SID内容
 	uint8_t n_sid[NID_LENGTH];
 	uint8_t l_sid[L_SID_LENGTH];
-	//包类型:注册(0x01)，更新(0x02)，删除(0x03) 
+	//包类型:注册(0x01)，更新(0x02)，删除(0x03)
 	//回送ACK:SUCCESS(0x10), DUPLICATE(0x20), INVALIDE(0x30)
 	uint8_t type;
 	//提供者的NID
@@ -110,5 +119,3 @@ struct control_announce{
 };
 
 #endif
-
-

@@ -689,6 +689,7 @@ void *thread(void *arg)
         printf("[6]【delete】Send REGISTER packets!\n");
 		printf("[7]【update】Send REGISTER packets!\n");
 		printf("[8] TEST CPU\n");
+        printf("[9]【batch-add】Send REGISTER packets!\n");
 		printf("cmd:");
 		fflush(stdout);
 
@@ -698,6 +699,14 @@ void *thread(void *arg)
 	 	getchar();
 		struct rte_mbuf mybuf;
 		switch(command_flag){
+            case 9:
+                int cycle=1;
+                scanf("%d",&cycle);
+                while(cycle>0){
+                    send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
+                    cycle--;
+                }
+            break;
 			//TODO:测试CPU是否被正确绑定
 			case 8:
 				printf("Begin to test cpu\n top -H -p 30420\n use [F][space][Enter][↑][↓][q] to control it!\n");
