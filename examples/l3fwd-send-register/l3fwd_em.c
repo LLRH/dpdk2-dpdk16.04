@@ -698,6 +698,7 @@ void *thread(void *arg)
 		switch(command_flag){
 			case 8:
 				printf("Begin to TEST cpu\n top -H -p 30420\n use [F][space][Enter] to control it!");
+				fflush(stdout);
 				while(!force_quit){
 					int a=0;
 					int b=0;
