@@ -670,7 +670,8 @@ void *thread(void *arg)
 
 	unsigned lcore_id=*((unsigned *)arg);
 
-	printf("[from %s]The new thread in lcoreid=%u",__func__,lcore_id);
+	unsigned lcore_id_now= rte_lcore_id();
+	printf("[from %s]The new thread from lcoreid=%u, in lcoreid=%u now\n",__func__,lcore_id,lcore_id_now);
 
 	printf("\n\033[\033[1;33;41m IDEA*************Enter**CoLoR***CMD************* \033[0m \n");
 
@@ -696,8 +697,9 @@ void *thread(void *arg)
 	 	getchar();
 		struct rte_mbuf mybuf;
 		switch(command_flag){
+			//TODO:测试CPU是否被正确绑定
 			case 8:
-				printf("Begin to TEST cpu\n top -H -p 30420\n use [F][space][Enter] to control it!");
+				printf("Begin to test cpu\n top -H -p 30420\n use [F][space][Enter][↑][↓][q] to control it!\n");
 				fflush(stdout);
 				while(!force_quit){
 					int a=0;
