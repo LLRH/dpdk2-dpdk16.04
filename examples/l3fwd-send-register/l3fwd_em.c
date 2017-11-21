@@ -635,26 +635,27 @@ void printids(const char *s)
 {
 	pid_t pid;
 	pthread_t tid;
-	
+
 	pid=getpid();
 	tid=pthread_self();
-	
+
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
 /*cpu_set_t  //是一个掩码数组，一共有1024位，每一位都可以对应一个cpu核心
 //以下宏，都是对这个掩码进行操作的。如果需要，一个进程是可以绑定多个cpu的。    */
 void CPU_ZERO(cpu_set_t *set){
-    *set=0;
+    int mask=0x00;
+    *set=(cpu_set_t)mask;
 };
 void CPU_SET(int cpu, cpu_set_t *set){
-    *set=(*set)|cpu;
+    *set=(*set)|(cpu_set_T)cpu;
 };
 void CPU_CLR(int cpu, cpu_set_t *set){
-    *set=(*set)&(~cpu);
+    *set=(*set)&(cpu_set_T)(~cpu);
 };
 int CPU_ISSET(int cpu, cpu_set_t *set){
-    if(*set&cpu==cpu){
+    if(*set&(cpu_set_T)cpu==(cpu_set_T)cpu){
         return 1;
     }else{
         return 0;
@@ -670,11 +671,11 @@ void *thread(void *arg)
     CPU_ZERO(&mask);
 
 	unsigned lcore_id=*((unsigned *)arg);
-	
+
 	printf("\n\033[\033[1;33;41m IDEA*************Enter**CoLoR***CMD************* \033[0m \n");
-		
+
 	bool my_quit=false;
-		
+
 	while(!force_quit && my_quit==false){
 		printf("______________________________\n");
 		printf("[0]Exit the programe!\n");
@@ -687,8 +688,8 @@ void *thread(void *arg)
 		printf("[7]【update】Send REGISTER packets!\n");
 		printf("cmd:");
 		fflush(stdout);
-	
-	 
+
+
 		int command_flag=-1;
 		int res=scanf("%d",&command_flag);
 	 	getchar();
@@ -704,10 +705,10 @@ void *thread(void *arg)
 				printf("Send Nash_negotiation packets!");
 				break;
 			case 3:
-				send_mbuf_GET(0,&mybuf,lcore_id);	
+				send_mbuf_GET(0,&mybuf,lcore_id);
 				printf("Send GET packets!\n");
 				break;
-			
+
 			case 1:
                 send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
 				//send_mbuf(1,&mybuf,lcore_id);
@@ -718,7 +719,7 @@ void *thread(void *arg)
 				force_quit=true;
 				break;
 			default:
-				printf("Error Input\n");		
+				printf("Error Input\n");
 		}
 	}
 
@@ -751,7 +752,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 		return 0;
 	}
 
-	
+
 	RTE_LOG(INFO, L3FWD, "entering main loop on lcore %u\n", lcore_id);
 
 	for (i = 0; i < qconf->n_rx_queue; i++) {
@@ -762,7 +763,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 			" -- lcoreid=%u portid=%hhu rxqueueid=%hhu\n",
 			lcore_id, portid, queueid);
 	}
-	
+
 	//--------20170313 温兴泵
 	//TODO:启动了一个线程，作为命令行的窗口，而且当逻辑核为1的时候启动该线程！
 	if(lcore_id==1)
@@ -799,24 +800,24 @@ em_main_loop(__attribute__((unused)) void *dummy)
 
 			prev_tsc = cur_tsc;
 		}
-		
+
 		/*温兴泵20170310*/
 		//从端口0和1发出去包
 		/*
 		struct rte_mbuf mybuf;
-		send_mbuf(0,&mybuf);	
-		send_mbuf(1,&mybuf);	
+		send_mbuf(0,&mybuf);
+		send_mbuf(1,&mybuf);
 		*/
-		
+
 		/*
 		 * Read packet from RX queues
 		 */
-		for (i = 0; i < qconf->n_rx_queue; ++i) 
+		for (i = 0; i < qconf->n_rx_queue; ++i)
 		{
 			portid = qconf->rx_queue_list[i].port_id;
 			queueid = qconf->rx_queue_list[i].queue_id;
 			nb_rx = rte_eth_rx_burst(portid, queueid, pkts_burst,MAX_PKT_BURST);
-			
+
 			if (nb_rx == 0)
 				continue;
 
