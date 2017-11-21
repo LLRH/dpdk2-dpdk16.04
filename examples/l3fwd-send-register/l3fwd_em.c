@@ -68,11 +68,11 @@
 
 #define IPV6_ADDR_LEN 16
 
-
+/*
 #define __USE_GNU
 #include <sched.h>
 #include <pthread.h>
-
+*/
 
 struct ipv4_5tuple {
 	uint32_t ip_dst;
