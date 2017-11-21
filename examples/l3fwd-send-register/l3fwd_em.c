@@ -700,6 +700,7 @@ void *thread(void *arg)
 			//TODO:测试CPU是否被正确绑定
 			case 8:
 				printf("Begin to test cpu\n top -H -p 30420\n use [F][space][Enter][↑][↓][q] to control it!\n");
+				printf("Please press [Ctrl+C] to exit the test\n");
 				fflush(stdout);
 				while(!force_quit){
 					int a=0;
@@ -736,7 +737,6 @@ void *thread(void *arg)
 
 	pthread_exit(NULL);
 	return ((void*)0);
-
 }
 
 
