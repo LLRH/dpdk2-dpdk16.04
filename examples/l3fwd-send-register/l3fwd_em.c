@@ -646,9 +646,9 @@ void printids(const char *s)
 //以下宏，都是对这个掩码进行操作的。如果需要，一个进程是可以绑定多个cpu的。    */
 void CPU_ZERO(cpu_set_t *set){
     int mask=0x00;
-    *set=(cpu_set_t)mask;
+    *set=*((cpu_set_t*)&mask);
 };
-void CPU_SET(int cpu, cpu_set_t *set){
+/*void CPU_SET(int cpu, cpu_set_t *set){
     *set=(*set)|(cpu_set_t)cpu;
 };
 void CPU_CLR(int cpu, cpu_set_t *set){
@@ -660,7 +660,7 @@ int CPU_ISSET(int cpu, cpu_set_t *set){
     }else{
         return 0;
     }
-};
+};*/
 
 void *thread(void *arg)
 {
