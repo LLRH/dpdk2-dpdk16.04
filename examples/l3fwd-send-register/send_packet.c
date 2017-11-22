@@ -84,6 +84,19 @@ uint64_t mysrand(int min, int max) {
 //TODO:让GET包读取上次注册的内容
 uint8_t l_sid_last[L_SID_LENGTH];
 
+//TODO:按照进位跟新
+void add_one(uint8_t array[L_SID_LENGTH]){
+    int  index=L_SID_LENGTH-1;
+    while(index>=0 && array[index]==0xFF){
+        array[index]=0;
+        index--;
+    }
+    if(index>=0){
+        array[index]++;
+    }
+    return;
+}
+
 static int
 pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
 
@@ -102,8 +115,14 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
         n_sid[i] = mysrand(0x0, 0xFF);
     }
 
-    uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1, 0x2, 0x2,
-                                   0x2, 0x2, 0x3, 0x3, 0x3, 0x3, 0x0, 0x0, 0x0, 0x1};
+    //TODO:为了防止重复，开始启用大规模的遍历模式
+  uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
+                                   0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
+  static uint8_t l_sid_sequence[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
+                                   0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
+    add_one(l_sid_sequence);
 
     for (i = 0; i < L_SID_LENGTH; i++) {
         //删除或者更新上一次的
@@ -111,7 +130,8 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
             l_sid[i]=l_sid_last[i];
         }else{
             //REGISTER_TYPE_ADD
-            l_sid[i] = mysrand(0x00, 0xFF);
+            //l_sid[i] = mysrand(0x00, 0xFF);
+            l_sid[i] = l_sid_sequence[i];
             l_sid_last[i] = l_sid[i];
         }
     }
