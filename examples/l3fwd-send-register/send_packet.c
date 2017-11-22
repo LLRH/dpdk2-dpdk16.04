@@ -155,10 +155,10 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
     }*/
 
     arrayToHexStr(n_sid,NID_LENGTH,LOG_TEMP);
-    RTE_LOG(DEBUG,L3FWD,"l_sid=%s\n",nid_s);
+    RTE_LOG(DEBUG,L3FWD,"l_sid=%s\n",LOG_TEMP);
 
     arrayToHexStr(l_sid,L_SID_LENGTH,LOG_TEMP);
-    RTE_LOG(DEBUG,L3FWD,"n_sid=%s\n",n_sid);
+    RTE_LOG(DEBUG,L3FWD,"n_sid=%s\n",LOG_TEMP);
 
     return sizeof(control_register_t);
 }
