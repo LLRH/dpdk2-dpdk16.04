@@ -495,7 +495,7 @@ send_packets_multi(struct lcore_conf *qconf, struct rte_mbuf **pkts_burst,
 		else
 			for (m = j; m != j + k; m++)
 				rte_pktmbuf_free(pkts_burst[m]);
-		        RTELOG(DEBUG,L3FWD,"[%s-%s]free a packet",__FILE__,__func__);
+		        RTE_LOG(DEBUG,L3FWD,"[%s-%s]free a packet",__FILE__,__func__);
 	}
 }
 
