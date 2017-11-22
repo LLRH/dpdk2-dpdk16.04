@@ -7,6 +7,23 @@ extern struct rte_mempool *pktmbuf_pool[NB_SOCKETS];
 #include <stdlib.h>
 #include <time.h>
 
+//TODO:把数组变成16进制的字符串
+void arrayToHexStr(uint8_t * start, uint8_t len, char str[256]){
+    str[0]='\0';
+    char temp[10];
+    int i=0;
+    //TODO:代表16进制，可读性强
+    strcat(str,"0x");
+    for(i=0;i<len;i++)
+    {
+        //str[i]=start[i];
+        temp[0]='\0';
+        sprintf(temp,"%2X",start[i]);
+        if(temp[0]==' ') temp[0]='0';
+        strcat(str,temp);
+    }
+}
+
 static int
 pktgen_ctor_ether_header(struct ether_hdr *eth, struct rte_mbuf *m) {
     struct ether_hdr *ether_header = eth;
@@ -69,6 +86,9 @@ uint8_t l_sid_last[L_SID_LENGTH];
 
 static int
 pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
+
+    char LOG_TEMP[1024];
+
     int i = 0;
     control_register_t *control_register_hdr = \
         rte_pktmbuf_mtod_offset(m, control_register_t * ,
@@ -134,18 +154,12 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
             break;
     }*/
 
-    for (i = 0; i < NID_LENGTH; i++) {
-        printf("%2X:", n_sid[i]);
-    }
+    arrayToHexStr(n_sid,NID_LENGTH,LOG_TEMP);
+    RTE_LOG(DEBUG,"l_sid=%s\n",nid_s);
 
-    for (i = 0; i < L_SID_LENGTH; i++) {
-        printf("%2X", l_sid[i]);
-        if (i != L_SID_LENGTH - 1) {
-            printf(":");
-        } else {
-            printf("\n");
-        }
-    }
+    arrayToHexStr(l_sid,L_SID_LENGTH,LOG_TEMP);
+    RTE_LOG(DEBUG,"n_sid=%s\n",n_sid);
+
     return sizeof(control_register_t);
 }
 
