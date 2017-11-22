@@ -111,7 +111,7 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
             l_sid[i]=l_sid_last[i];
         }else{
             //REGISTER_TYPE_ADD
-            l_sid[i] = mysrand('!', '~');
+            l_sid[i] = mysrand(0x00, 0xFF);
             l_sid_last[i] = l_sid[i];
         }
     }
@@ -126,7 +126,7 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
     uint8_t nid_s[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1,
                                  0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
     for (i = 0; i < NID_LENGTH; i++) {
-        nid_s[i] = mysrand('!', '~');
+        nid_s[i] = mysrand(0x00, 0xFF);
     }
 
     memcpy(control_register_hdr->nid_s, nid_s, NID_LENGTH);
