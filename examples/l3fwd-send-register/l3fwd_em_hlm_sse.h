@@ -245,8 +245,7 @@ em_get_dst_port(const struct lcore_conf *qconf, struct rte_mbuf *pkt,
 	tcp_or_udp = pkt->packet_type & (RTE_PTYPE_L4_TCP | RTE_PTYPE_L4_UDP);
 	l3_ptypes = pkt->packet_type & RTE_PTYPE_L3_MASK;
 
-	printf("\n[From %s]Receive a packet, portid=%d\n",__func__,portid);
-
+	RTE_LOG(DEBUG,L3FWD,"[%s-%s]Receive a packet, portid=%d\n",__FILE__,__func__,portid);
 	if (/*tcp_or_udp &&*/ (l3_ptypes == RTE_PTYPE_L3_IPV4)) {
 		
 		/* Handle IPv4 headers.*/
