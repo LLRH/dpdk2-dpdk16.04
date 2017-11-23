@@ -645,6 +645,29 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
+void print(int finish,int total){
+    int i=0;
+        static int last_finish=-2;
+	    if(last_finish!=-2){
+	        	printf("\r\033[k");
+			    }
+			        last_finish=-1;
+				    finish=(int)((double)finish/(double)total*100);
+				        if(finish==last_finish){
+					        return;
+						    }
+						        char buffer[101];
+							    for(i=0;i<finish;i++){
+							            buffer[i]='-';
+								        }
+									    buffer[i++]='>';
+									        buffer[i++]='\0';
+										    printf("%s[%2d%%]",buffer,finish);
+										        fflush(stdout);
+											}
+
+
+
 /*cpu_set_t  //是一个掩码数组，一共有1024位，每一位都可以对应一个cpu核心
 //以下宏，都是对这个掩码进行操作的。如果需要，一个进程是可以绑定多个cpu的。    */
 /*void CPU_ZERO(cpu_set_t *set){
