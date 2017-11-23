@@ -645,26 +645,26 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
-void print(int finish,int total){
-    int i=0;
-        static int last_finish=-2;
-	    if(last_finish!=-2){
-	        	printf("\r\033[k");
-			    }
-			        last_finish=-1;
-				    finish=(int)((double)finish/(double)total*100);
-				        if(finish==last_finish){
-					        return;
-						    }
-						        char buffer[101];
-							    for(i=0;i<finish;i++){
-							            buffer[i]='-';
-								        }
-									    buffer[i++]='>';
-									        buffer[i++]='\0';
-										    printf("%s[%2d%%]",buffer,finish);
-										        fflush(stdout);
-											}
+void print(uint64_t finish, uint64_t total) {
+    uint64_t i = 0;
+    static int last_finish = -2;
+    if (last_finish != -2) {
+        printf("\r\033[k");
+    }
+    last_finish = -1;
+    finish = (int) ((double) finish / (double) total * 100);
+    if (finish == last_finish) {
+        return;
+    }
+    char buffer[101];
+    for (i = 0; i < finish; i++) {
+        buffer[i] = '-';
+    }
+    buffer[i++] = '>';
+    buffer[i++] = '\0';
+    printf("%s[%2d%%]", buffer, finish);
+    fflush(stdout);
+}
 
 
 
@@ -726,10 +726,13 @@ void *thread(void *arg)
             case 9:
                 cycle=1;
                 int temp=scanf("%d",&cycle);
+                int total=cycle;
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     cycle--;
+                    print(total-cycle,total);
                 }
+                printf("\n");
             break;
 			//TODO:测试CPU是否被正确绑定
 			case 8:
