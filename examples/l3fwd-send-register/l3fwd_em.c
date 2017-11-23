@@ -656,7 +656,8 @@ void print(uint64_t finish, uint64_t total) {
     if (finish == last_finish) {
         return;
     }
-    char buffer[101];
+    last_finish=finish;
+    char buffer[200];
     for (i = 0; i < finish; i++) {
         buffer[i] = '-';
     }
@@ -725,6 +726,7 @@ void *thread(void *arg)
 		switch(command_flag){
             case 9:
                 cycle=1;
+                printf("please input the number:");
                 int temp=scanf("%d",&cycle);
                 int total=cycle;
                 while(cycle>0){
