@@ -742,6 +742,7 @@ void *thread(void *arg)
                 }
                 printf("\n");
                 finish=clock();
+                duration=(double)(finish-start)/CLOCKS_PER_SEC;
                 printf("Time duration: %f seconds\n",duration);
             break;
 			//TODO:测试CPU是否被正确绑定
