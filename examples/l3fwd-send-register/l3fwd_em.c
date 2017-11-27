@@ -731,12 +731,18 @@ void *thread(void *arg)
                 printf("please int the start_counter(%u):",start_counter);
                 temp=scanf("%d",&start_counter);
                 int total=cycle;
+
+                clock_t start,finish;
+                double duration;
+                start=clock();
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     cycle--;
                     print(total-cycle,total);
                 }
                 printf("\n");
+                finish=clock();
+                printf("Time duration: %f seconds\n",duration);
             break;
 			//TODO:测试CPU是否被正确绑定
 			case 8:
