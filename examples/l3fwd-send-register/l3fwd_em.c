@@ -657,7 +657,7 @@ void print(uint64_t finish, uint64_t total) {
         return;
     }
     last_finish=finish;
-    char buffer[200];
+    char buffer[256];
     for (i = 0; i < finish; i++) {
         buffer[i] = '-';
     }
@@ -666,7 +666,6 @@ void print(uint64_t finish, uint64_t total) {
     printf("%s[%2d%%]", buffer, finish);
     fflush(stdout);
 }
-
 
 
 /*cpu_set_t  //是一个掩码数组，一共有1024位，每一位都可以对应一个cpu核心

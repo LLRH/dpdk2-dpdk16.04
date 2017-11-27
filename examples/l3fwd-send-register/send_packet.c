@@ -84,17 +84,17 @@ uint64_t mysrand(int min, int max) {
 //TODO:让GET包读取上次注册的内容
 uint8_t l_sid_last[L_SID_LENGTH];
 
-//TODO:按照进位跟新
-void add_one(uint8_t array[L_SID_LENGTH]){
-    int  index=L_SID_LENGTH-1;
-    while(index>=0 && array[index]==0xFF){
-        array[index]=0;
-        index--;
+//TODO:使用全新的生成方式
+uint64_t start_counter=1;
+void add_one_v2(uint8_t array[L_SID_LENGTH]){
+    int index=L_SID_LENGTH-1;
+    uint64_t temp=start_counter;
+    while(temp>0 && index>=0){
+        array[index--]=temp%0xFF;
+        temp=temp/0xFF;
     }
-    if(index>=0){
-        array[index]++;
-    }
-    return;
+    //更新计数器
+    start_counter++;
 }
 
 static int
@@ -119,10 +119,10 @@ pktgen_ctor_register(struct rte_mbuf *m,uint8_t type) {
   uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
                                    0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-  static uint8_t l_sid_sequence[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
+  uint8_t l_sid_sequence[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
                                    0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-    add_one(l_sid_sequence);
+    add_one_v2(l_sid_sequence);
 
     for (i = 0; i < L_SID_LENGTH; i++) {
         //删除或者更新上一次的
