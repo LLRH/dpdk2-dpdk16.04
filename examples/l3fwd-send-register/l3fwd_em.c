@@ -58,6 +58,9 @@
 
 #include "l3fwd.h"
 
+#include <sys/time.h>
+g
+
 #ifdef RTE_MACHINE_CPUFLAG_SSE4_2
 #include <rte_hash_crc.h>
 #define DEFAULT_HASH_FUNC       rte_hash_crc
@@ -675,7 +678,6 @@ void print(uint64_t finish, uint64_t total) {
     *set=*((cpu_set_t*)&mask);
 };*/
 
-#include <time.h>
 void *thread(void *arg)
 {
 	printids("new thread");
