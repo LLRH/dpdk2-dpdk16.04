@@ -735,8 +735,8 @@ void *thread(void *arg)
                 temp=scanf("%d",&start_counter);
                 int total=cycle;
 
-                timeval starttime,endtime;
-                gettimeofday(&starttime,0);
+                uint64_t hz_timer = rte_get_timer_hz();
+                uint64_t cur_tsc1 = rte_rdtsc();
 
                 //do some process here
 
@@ -747,10 +747,11 @@ void *thread(void *arg)
                     print(total-cycle,total);
                 }
                 printf("\n");
-                gettimeofday(&endtime,0);
-                double duration = 1000000*(endtime.tv_sec - starttime.tv_sec) + endtime.tv_usec - startime.tv_usec;
 
-                printf("Time duration: %f seconds\n",duration);
+                uint64_t cur_tsc2 = rte_rdtsc();
+                printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
+                printf("hz_timer=%ld\n",hz_timer);
+
             break;
 			//TODO:测试CPU是否被正确绑定
 			case 8:
