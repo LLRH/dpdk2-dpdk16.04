@@ -56,10 +56,10 @@
 #include <rte_udp.h>
 #include <rte_hash.h>
 
+#include <rte_timer.h>
+
 #include "l3fwd.h"
 
-#include <sys/time.h>
-g
 
 #ifdef RTE_MACHINE_CPUFLAG_SSE4_2
 #include <rte_hash_crc.h>
