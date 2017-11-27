@@ -732,17 +732,21 @@ void *thread(void *arg)
                 temp=scanf("%d",&start_counter);
                 int total=cycle;
 
-                clock_t start,finish;
-                double duration;
-                start=clock();
+                timeval starttime,endtime;
+                gettimeofday(&starttime,0);
+
+                //do some process here
+
+
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     cycle--;
                     print(total-cycle,total);
                 }
                 printf("\n");
-                finish=clock();
-                duration=(double)(finish-start)/CLK_TCK;
+                gettimeofday(&endtime,0);
+                double duration = 1000000*(endtime.tv_sec - starttime.tv_sec) + endtime.tv_usec - startime.tv_usec;
+
                 printf("Time duration: %f seconds\n",duration);
             break;
 			//TODO:测试CPU是否被正确绑定
