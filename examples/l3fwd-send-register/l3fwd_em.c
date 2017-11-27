@@ -675,6 +675,7 @@ void print(uint64_t finish, uint64_t total) {
     *set=*((cpu_set_t*)&mask);
 };*/
 
+#include <time.h>
 void *thread(void *arg)
 {
 	printids("new thread");
