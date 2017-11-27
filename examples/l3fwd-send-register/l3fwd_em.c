@@ -727,6 +727,9 @@ void *thread(void *arg)
                 cycle=1;
                 printf("please input the number:");
                 int temp=scanf("%d",&cycle);
+                extern start_counter;
+                printf("please int the start_counter:");
+                temp=scanf("%d",&start_counter);
                 int total=cycle;
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
