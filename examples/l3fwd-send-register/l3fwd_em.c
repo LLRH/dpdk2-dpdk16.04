@@ -749,9 +749,9 @@ void *thread(void *arg)
                 printf("\n");
 
                 uint64_t cur_tsc2 = rte_rdtsc();
-                printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
-                printf("hz_timer=%ld\n",hz_timer);
-
+                //printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
+                //printf("hz_timer=%ld\n",hz_timer);
+                printf("duration= %f seconds",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
             break;
 			//TODO:测试CPU是否被正确绑定
 			case 8:
