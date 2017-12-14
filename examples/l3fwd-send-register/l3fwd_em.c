@@ -683,11 +683,10 @@ void *thread(void *arg)
 {
 	printids("new thread");
 
-
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
     _CPU_ZERO(&mask);
-	_CPU_SET(0x4, &mask);      //绑定cpu  从0开始
+	_CPU_SET(0x3, &mask);      //绑定cpu  从0开始
 	//0 代表对当前线程/进程进行设置。
 	if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
 	{

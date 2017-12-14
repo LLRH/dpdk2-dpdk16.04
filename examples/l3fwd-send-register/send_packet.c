@@ -232,7 +232,7 @@ void inline send_mbuf(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id) 
 */
 
 //:TODO:数据内容结构体分装函数
-static void
+static inline void
 pkt_setup_REGISTER(struct rte_mbuf *m,uint8_t type) {
     int ret = 0;
 
@@ -302,9 +302,6 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     pkt_setup_REGISTER(m,type);
 
     //TODO:发送数据包
-    send_single_packet(qconf, m, portid);
-    send_single_packet(qconf, m, portid);
-    send_single_packet(qconf, m, portid);
     send_single_packet(qconf, m, portid);
     rte_pktmbuf_free(m);
 }
