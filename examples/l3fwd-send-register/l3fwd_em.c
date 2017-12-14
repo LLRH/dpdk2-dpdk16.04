@@ -728,7 +728,7 @@ void *thread(void *arg)
 		struct rte_mbuf mybuf;
         int cycle;
 		switch(command_flag){
-            case 10:
+            case 10:{
                 cycle=1;
                 printf("please input the number:");
                 int temp=scanf("%u",&cycle);
@@ -742,7 +742,7 @@ void *thread(void *arg)
 
                 //do some process here
                 while(cycle>0){
-                    send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
+                    send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
                     cycle--;
                     print(total-cycle,total);
                 }
@@ -752,6 +752,8 @@ void *thread(void *arg)
                 //printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
                 //printf("hz_timer=%ld\n",hz_timer);
                 printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
+                break;
+            }
             case 9:
                 cycle=1;
                 printf("please input the number:");
