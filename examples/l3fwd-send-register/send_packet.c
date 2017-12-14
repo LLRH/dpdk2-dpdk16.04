@@ -321,12 +321,12 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
         //TODO：只拷贝数据字段的内容
         memcpy(
                 rte_pktmbuf_mtod_offset(&m,void*,0),
-                rte_pktmbuf_mtod_offset(&mBatch,void*,0),
+                rte_pktmbuf_mtod_offset(mBatch,void*,0),
                 sizeof(struct ether_hdr) +
                 sizeof(struct ipv4_hdr) +
                 sizeof(control_public_header_t)+
                 sizeof(control_register_t)
-        )
+        );
 
 
         control_register_t *control_register_hdr = \
