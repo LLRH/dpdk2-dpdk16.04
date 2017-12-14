@@ -284,28 +284,40 @@ void inline send_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_
 
 bool hasSET=false;
 struct rte_mbuf * mBatch;
+struct rte_mbuf m;
 struct lcore_conf *qconfBatch;
-        void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type,int batch){
+uint8_t socketidBatch;
+
+void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type,int batch){
     if(!hasSET){
         //TODO:申请内存空间
         if (lcore_id < 0) {
             lcore_id = rte_lcore_id();
         }
-        uint8_t socketid = rte_lcore_to_socket_id(lcore_id);
-        qconfBatch = &lcore_conf[lcore_id];
-        if (pktmbuf_pool[socketid] == NULL) {
+        socketidBatch = rte_lcore_to_socket_id(lcore_id);
+        qconfBatch = &lcore_conf[socketidBatch];
+
+        if (pktmbuf_pool[socketidBatch] == NULL) {
             rte_exit(EXIT_FAILURE, "pktmbuf_pool[socketid]==NULL\n");
         }
-        mBatch = rte_pktmbuf_alloc(pktmbuf_pool[socketid]);
+        mBatch = rte_pktmbuf_alloc(pktmbuf_pool[socketidBatch]);
         if (mBatch == NULL) {
             rte_exit(EXIT_FAILURE, "Allocate Failure\n");
         }
 
         //TODO:对内存数据进行修改
         pkt_setup_REGISTER(mBatch,type);
+        memcpy(&m,mBatch, sizeof(struct rte_mbuf));
         hasSET=true;
     }else{
         //只需要修改包内容即可
+
+        mBatch = rte_pktmbuf_alloc(pktmbuf_pool[socketidBatch]);
+        if (mBatch == NULL) {
+            rte_exit(EXIT_FAILURE, "Allocate Failure\n");
+        }
+        memcpy(mBatch,&m, sizeof(struct rte_mbuf));
+
         control_register_t *control_register_hdr = \
         rte_pktmbuf_mtod_offset(mBatch, control_register_t * ,
                                 sizeof(struct ether_hdr) +
@@ -316,7 +328,7 @@ struct lcore_conf *qconfBatch;
 
     send_single_packet(qconfBatch, mBatch, portid);
     //TODO：先不free给下次用吧 ??可否
-    //rte_pktmbuf_free(m);
+    rte_pktmbuf_free(mBatch);
 }
 
 /*******************get**********************************/
