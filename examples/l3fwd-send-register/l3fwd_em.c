@@ -648,6 +648,7 @@ void printids(const char *s)
 	printf("[From %s]%s pid %u tid %u (0x%x)\n",__func__,s,(unsigned int)pid, (unsigned int)tid, (unsigned int)tid);
 }
 
+static inline
 void print(uint64_t finish, uint64_t total) {
     uint64_t i = 0;
     static int last_finish = -2;
@@ -682,17 +683,17 @@ void *thread(void *arg)
 {
 	printids("new thread");
 
+
     //TODO:绑定CPU到某个逻辑核
     cpu_set_t mask;
     _CPU_ZERO(&mask);
-	_CPU_SET(0x4, &mask);      //绑定cpu 1
+	_CPU_SET(0x4, &mask);      //绑定cpu  从0开始
 	//0 代表对当前线程/进程进行设置。
-
 	if(sched_setaffinity(0, sizeof(mask), &mask) == -1)
 	{
-		printf("set affinity failed..");
+		printf("set affinity failed..\n");
 	}else{
-		printf("set affinity successfully");
+		printf("set affinity successfully..\n");
 	}
 
 	unsigned lcore_id=*((unsigned *)arg);
@@ -708,14 +709,15 @@ void *thread(void *arg)
 		printf("______________________________\n");
 		printf("[0]Exit the programe!\n");
 		printf("[1]【add】Send REGISTER packets!\n");
-		printf("[2]Send ANNOUNCE packets!\n");
+		//printf("[2]Send ANNOUNCE packets!\n");
 		printf("[3]Send GET packets!\n");
-		printf("[4]Send DATA packets!\n");
-		printf("[5]Send Nash_negotiation packets!\n");
+		//printf("[4]Send DATA packets!\n");
+		//printf("[5]Send Nash_negotiation packets!\n");
         printf("[6]【delete】Send REGISTER packets!\n");
 		printf("[7]【update】Send REGISTER packets!\n");
 		printf("[8] TEST CPU\n");
         printf("[9]【batch-add】Send REGISTER packets!\n");
+        printf("[10]【batch-add v2】Send REGISTER packets!\n");
 		printf("cmd:");
 		fflush(stdout);
 
@@ -726,6 +728,30 @@ void *thread(void *arg)
 		struct rte_mbuf mybuf;
         int cycle;
 		switch(command_flag){
+            case 10:
+                cycle=1;
+                printf("please input the number:");
+                int temp=scanf("%u",&cycle);
+                extern uint64_t start_counter;
+                printf("please int the start_counter(%u):",start_counter);
+                temp=scanf("%ug",&start_counter);
+                int total=cycle;
+
+                uint64_t hz_timer = rte_get_timer_hz();
+                uint64_t cur_tsc1 = rte_rdtsc();
+
+                //do some process here
+                while(cycle>0){
+                    send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
+                    cycle--;
+                    print(total-cycle,total);
+                }
+                printf("\n");
+
+                uint64_t cur_tsc2 = rte_rdtsc();
+                //printf("tsc_dif=%ld\n",cur_tsc2-cur_tsc1);
+                //printf("hz_timer=%ld\n",hz_timer);
+                printf("duration= %f seconds \n",(double)((double)(cur_tsc2-cur_tsc1))/(double)hz_timer);
             case 9:
                 cycle=1;
                 printf("please input the number:");
