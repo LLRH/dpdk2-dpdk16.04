@@ -284,19 +284,20 @@ void inline send_register(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_
 
 bool hasSET=false;
 struct rte_mbuf * mBatch;
-void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type,int batch){
+struct lcore_conf *qconfBatch;
+        void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned lcore_id,uint8_t type,int batch){
     if(!hasSET){
         //TODO:申请内存空间
         if (lcore_id < 0) {
             lcore_id = rte_lcore_id();
         }
         uint8_t socketid = rte_lcore_to_socket_id(lcore_id);
-        struct lcore_conf *qconf = &lcore_conf[lcore_id];
+        qconfBatch = &lcore_conf[lcore_id];
         if (pktmbuf_pool[socketid] == NULL) {
             rte_exit(EXIT_FAILURE, "pktmbuf_pool[socketid]==NULL\n");
         }
         mBatch = rte_pktmbuf_alloc(pktmbuf_pool[socketid]);
-        if (m == NULL) {
+        if (mBatch == NULL) {
             rte_exit(EXIT_FAILURE, "Allocate Failure\n");
         }
 
@@ -306,14 +307,14 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     }else{
         //只需要修改包内容即可
         control_register_t *control_register_hdr = \
-        rte_pktmbuf_mtod_offset(m, control_register_t * ,
+        rte_pktmbuf_mtod_offset(mBatch, control_register_t * ,
                                 sizeof(struct ether_hdr) +
                                 sizeof(struct ipv4_hdr) +
                                 sizeof(control_public_header_t));
         add_one_v2(control_register_hdr->l_sid);
     }
 
-    send_single_packet(qconf, m, portid);
+    send_single_packet(qconfBatch, mBatch, portid);
     //TODO：先不free给下次用吧 ??可否
     //rte_pktmbuf_free(m);
 }
