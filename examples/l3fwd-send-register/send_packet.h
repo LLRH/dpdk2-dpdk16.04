@@ -39,9 +39,9 @@ DPDK版本为16.04的L3fwd程序的发包补丁
 
 #include "l3fwd.h"
 
-/*
+//TODO:还是私自包含吧，防止说我多次定义
 #include "l3fwd_em_hlm_sse.h"
- */
+
 
 /*
 从端口发出去一个rte_mbuf结构体的内容
