@@ -38,6 +38,8 @@ DPDK版本为16.04的L3fwd程序的发包补丁
 #include <rte_hash.h>
 
 #include "l3fwd.h"
+
+#include "l3fwd_em_hlm_sse.h"
 /*
 从端口发出去一个rte_mbuf结构体的内容
 
