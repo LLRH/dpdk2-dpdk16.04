@@ -334,7 +334,37 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     control_public_hdr->control_type = control_type_register;
     ret += sizeof(control_public_header_t);
 
-    ret += pktgen_ctor_register(m,type);
+    //TODO:注册包部分
+    control_register_t *control_register_hdr = \
+        rte_pktmbuf_mtod_offset(m, control_register_t * ,
+                                sizeof(struct ether_hdr) +
+                                sizeof(struct ipv4_hdr) +
+                                sizeof(control_public_header_t));
+
+    uint8_t n_sid[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1,
+                                 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
+
+    //TODO:为了防止重复，开始启用大规模的遍历模式
+    uint8_t l_sid[L_SID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0,
+                                   0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+    add_one_v2(l_sid);
+
+    memcpy(control_register_hdr->n_sid, n_sid, NID_LENGTH);
+    memcpy(control_register_hdr->l_sid, l_sid, L_SID_LENGTH);
+
+    //TODO:此为注册的类型
+    control_register_hdr->type =type;
+    uint8_t nid_s[NID_LENGTH] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x01, 0x1, 0x1,
+                                 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3};
+    memcpy(control_register_hdr->nid_s, nid_s, NID_LENGTH);
+
+    control_register_hdr->scope = 1;
+    control_register_hdr->time_of_validity = 1;
+    control_register_hdr->time_unit = 1;
+    control_register_hdr->content_size = 1;
+    control_register_hdr->content_classification = 1;
+
+    ret += sizeof(control_register_t);
 
     m->nb_segs = 1;
     m->next = NULL;
