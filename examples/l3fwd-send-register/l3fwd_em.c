@@ -755,7 +755,7 @@ void *thread_CMD(void *arg)
                 break;
             }
             case 9:
-                int cycle=0;
+                cycle=0;
                 printf("please input the number:");
                 int temp=scanf("%u",&cycle);
                 extern uint64_t start_counter;
