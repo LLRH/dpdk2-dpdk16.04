@@ -733,8 +733,8 @@ void *thread_CMD(void *arg)
                 printf("please input the number:");
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
-                temp=scanf("%ug",&start_counter);
-                int temp=scanf("%u",& batch_cycle);
+                int temp=scanf("%ug",&start_counter);
+                temp=scanf("%u",& batch_cycle);
 
                 int total=batch_cycle;
 
