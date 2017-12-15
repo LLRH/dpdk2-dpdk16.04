@@ -679,7 +679,7 @@ void print(uint64_t finish, uint64_t total) {
     *set=*((cpu_set_t*)&mask);
 };*/
 
-uint64_t cycle = 0;
+uint64_t batch_cycle = 0;
 
 void *thread_CMD(void *arg)
 {
@@ -734,17 +734,16 @@ void *thread_CMD(void *arg)
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
                 temp=scanf("%ug",&start_counter);
-                int total=cycle;
+                int total=batch_cycle;
 
                 uint64_t hz_timer = rte_get_timer_hz();
                 uint64_t cur_tsc1 = rte_rdtsc();
 
                 //do some process here
-                while(cycle>0){
+                while(batch_cycle>0){
                     //TODO：在这里发送存在多线程竞争的问题！！
                     //send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
-                    cycle--;
-                    print(total-cycle,total);
+                    print(total-batch_cycle,total);
                 }
                 printf("\n");
 
@@ -755,7 +754,7 @@ void *thread_CMD(void *arg)
                 break;
             }
             case 9:
-                cycle=0;
+                int cycle=0;
                 printf("please input the number:");
                 int temp=scanf("%u",&cycle);
                 extern uint64_t start_counter;
@@ -771,9 +770,8 @@ void *thread_CMD(void *arg)
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     print(total-cycle,total);
-                    usleep(1000);
+                    cycle--;
                 }
-                send_register_batch_flag=false;
                 printf("\n");
 
                 uint64_t cur_tsc2 = rte_rdtsc();
@@ -906,9 +904,9 @@ em_main_loop(__attribute__((unused)) void *dummy)
 		*/
         //TODO:大胆的尝试！
         struct rte_mbuf mybuf;
-        if(lcore_id==1 && cycle >0 ){
+        if(lcore_id==1 && batch_cycle >0 ){
             send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
-            cycle--;
+            batch_cycle--;
         }
 
 		/*
