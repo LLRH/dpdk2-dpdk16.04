@@ -732,7 +732,7 @@ void *thread_CMD(void *arg)
             case 10:{
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
-                int temp=scanf("%ug",&start_counter);
+                int temp=scanf("%lu",&start_counter);
                 printf("please input the number:");
                 temp=scanf("%u",& batch_cycle);
 
