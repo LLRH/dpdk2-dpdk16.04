@@ -727,11 +727,11 @@ void *thread_CMD(void *arg)
 		int res=scanf("%d",&command_flag);
 	 	getchar();
 		struct rte_mbuf mybuf;
-        int cycle=0;
+        uint64_t cycle=0;
 		switch(command_flag){
             case 10:{
                 extern uint64_t start_counter;
-                printf("please int the start_counter(%u):",start_counter);
+                printf("please int the start_counter(%lu):",start_counter);
                 int temp=scanf("%lu",&start_counter);
                 printf("please input the number:");
                 temp=scanf("%u",& batch_cycle);
@@ -759,11 +759,11 @@ void *thread_CMD(void *arg)
             case 9:
                 cycle=0;
                 printf("please input the number:");
-                int temp=scanf("%u",&cycle);
+                int temp=scanf("%lu",&cycle);
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
                 temp=scanf("%ug",&start_counter);
-                int total=cycle;
+                uint64_t total=cycle;
 
                 uint64_t hz_timer = rte_get_timer_hz();
                 uint64_t cur_tsc1 = rte_rdtsc();
