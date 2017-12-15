@@ -679,7 +679,7 @@ void print(uint64_t finish, uint64_t total) {
     *set=*((cpu_set_t*)&mask);
 };*/
 
-void *thread(void *arg)
+void *thread_CMD(void *arg)
 {
 	printids("new thread");
 
@@ -865,7 +865,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 	{
 		int temp;
 		pthread_t ntid;
-		if( (temp=pthread_create(&ntid,NULL,thread,(void*)&lcore_id) )!=0)
+		if( (temp=pthread_create(&ntid,NULL,thread_CMD,(void*)&lcore_id) )!=0)
 		{
 			printf("can't create thread: %s\n",strerror(temp));
 			return 1;
@@ -903,7 +903,8 @@ em_main_loop(__attribute__((unused)) void *dummy)
 		send_mbuf(0,&mybuf);
 		send_mbuf(1,&mybuf);
 		*/
-
+        //TODO:大胆的尝试！
+        send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
 		/*
 		 * Read packet from RX queues
 		 */
