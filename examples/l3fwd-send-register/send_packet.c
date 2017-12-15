@@ -381,7 +381,7 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     //TODO:发送数据包
     uint16_t dst_port[1];
     dst_port[0]=portid;
-    send_single_packet(qconf, &m, dst_port,1);
+    send_packets_multi(qconf, &m, dst_port,1);
     rte_pktmbuf_free(m);
 }
 
