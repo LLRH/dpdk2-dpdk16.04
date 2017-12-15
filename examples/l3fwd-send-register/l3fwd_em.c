@@ -904,6 +904,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 		send_mbuf(1,&mybuf);
 		*/
         //TODO:大胆的尝试！
+        struct rte_mbuf mybuf;
         send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
 		/*
 		 * Read packet from RX queues
