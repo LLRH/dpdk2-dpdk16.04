@@ -730,13 +730,13 @@ void *thread_CMD(void *arg)
         int cycle=0;
 		switch(command_flag){
             case 10:{
-                printf("please input the number:");
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
                 int temp=scanf("%ug",&start_counter);
+                printf("please input the number:");
                 temp=scanf("%u",& batch_cycle);
 
-                int total=batch_cycle;
+                uint64_t total=batch_cycle;
 
                 uint64_t hz_timer = rte_get_timer_hz();
                 uint64_t cur_tsc1 = rte_rdtsc();
