@@ -370,16 +370,18 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     m->next = NULL;
     m->pkt_len = ret;
     m->data_len = ret;
-
+/*
     char LOG_TEMP[1024];
     arrayToHexStr(n_sid,NID_LENGTH,LOG_TEMP);
     RTE_LOG(DEBUG,L3FWD,"l_sid=%s\n",LOG_TEMP);
 
     arrayToHexStr(l_sid,L_SID_LENGTH,LOG_TEMP);
     RTE_LOG(DEBUG,L3FWD,"n_sid=%s\n",LOG_TEMP);
-
+*/
     //TODO:发送数据包
-    send_single_packet(qconf, m, portid);
+    uint16_t dst_port[1];
+    dst_port[0]=portid;
+    send_single_packet(qconf, &m, dst_port,1);
     rte_pktmbuf_free(m);
 }
 
