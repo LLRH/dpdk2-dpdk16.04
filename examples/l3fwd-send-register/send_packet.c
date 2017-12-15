@@ -299,12 +299,6 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     }
 
     int ret = 0;
-    struct ether_hdr eth_hdr;
-    ret = pktgen_ctor_ether_header(&eth_hdr, m);
-    struct ipv4_hdr ipv4_hdr;
-    ret += pktgen_ctor_ip_header(&ipv4_hdr, m, TYPE_CONTROL);
-    ret += pktgen_ctor_control_public_header(m);
-    ret +=     int ret = 0;
 
     struct ether_hdr eth_hdr;
     ret = pktgen_ctor_ether_header(&eth_hdr, m);
@@ -315,10 +309,6 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     ret += pktgen_ctor_control_public_header(m);
     ret += pktgen_ctor_register(m,type);
 
-    m->nb_segs = 1;
-    m->next = NULL;
-    m->pkt_len = ret;
-    m->data_len = ret;(m,type);
     m->nb_segs = 1;
     m->next = NULL;
     m->pkt_len = ret;
