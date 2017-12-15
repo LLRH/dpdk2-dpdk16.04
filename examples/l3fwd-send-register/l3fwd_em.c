@@ -910,6 +910,8 @@ em_main_loop(__attribute__((unused)) void *dummy)
         if(lcore_id==1 && batch_cycle >0 ){
             send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
             batch_cycle--;
+            continue;
+            //TODO：你好好给我发包，什么都别管了啊！
         }
 
 		/*
@@ -920,6 +922,7 @@ em_main_loop(__attribute__((unused)) void *dummy)
 			portid = qconf->rx_queue_list[i].port_id;
 			queueid = qconf->rx_queue_list[i].queue_id;
 			nb_rx = rte_eth_rx_burst(portid, queueid, pkts_burst,MAX_PKT_BURST);
+
 
 			if (nb_rx == 0)
 				continue;
