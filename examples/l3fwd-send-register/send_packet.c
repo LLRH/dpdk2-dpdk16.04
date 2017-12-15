@@ -379,9 +379,7 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     RTE_LOG(DEBUG,L3FWD,"n_sid=%s\n",LOG_TEMP);
 */
     //TODO:发送数据包
-    uint16_t dst_port[1];
-    dst_port[0]=portid;
-    send_packets_multi(qconf, &m, dst_port,1);
+    send_single_packet(qconf, &m,portid);
     rte_pktmbuf_free(m);
 }
 
