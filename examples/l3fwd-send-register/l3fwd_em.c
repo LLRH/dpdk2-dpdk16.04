@@ -768,10 +768,10 @@ void *thread_CMD(void *arg)
 
                 //do some process here
 
-                send_register_batch_flag=true;
                 while(cycle>0){
                     send_register(0,&mybuf,lcore_id,REGISTER_TYPE_ADD);
                     print(total-cycle,total);
+                    usleep(1000);
                 }
                 send_register_batch_flag=false;
                 printf("\n");
