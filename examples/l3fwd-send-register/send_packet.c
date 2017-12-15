@@ -326,7 +326,14 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     memcpy(rte_pktmbuf_mtod_offset(m,struct ipv4_hdr*,sizeof(struct ether_hdr)),&ip_header, sizeof(struct ipv4_hdr));
     ret += sizeof(struct ipv4_hdr);
 
-    ret += pktgen_ctor_control_public_header(m);
+    //TODO:控制包头部分
+    control_public_header_t *control_public_hdr = rte_pktmbuf_mtod_offset(m, control_public_header_t * ,
+                                                                          sizeof(struct ether_hdr) +
+                                                                          sizeof(struct ipv4_hdr));
+    control_public_hdr->version_type = TYPE_CONTROL;
+    control_public_hdr->control_type = control_type_register;
+    ret += sizeof(control_public_header_t);
+
     ret += pktgen_ctor_register(m,type);
 
     m->nb_segs = 1;
