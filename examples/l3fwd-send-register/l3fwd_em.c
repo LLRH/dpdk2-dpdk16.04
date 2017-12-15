@@ -667,7 +667,7 @@ void print(uint64_t finish, uint64_t total) {
     }
     buffer[i++] = '>';
     buffer[i++] = '\0';
-    printf("%s[%2u%%]", buffer, finish);
+    printf("%s[%2lu%%]", buffer, finish);
     fflush(stdout);
 }
 
@@ -734,7 +734,7 @@ void *thread_CMD(void *arg)
                 printf("please int the start_counter(%lu):",start_counter);
                 int temp=scanf("%lu",&start_counter);
                 printf("please input the number:");
-                temp=scanf("%u",& batch_cycle);
+                temp=scanf("%lu",& batch_cycle);
 
                 uint64_t total=batch_cycle;
 
@@ -761,8 +761,8 @@ void *thread_CMD(void *arg)
                 printf("please input the number:");
                 int temp=scanf("%lu",&cycle);
                 extern uint64_t start_counter;
-                printf("please int the start_counter(%u):",start_counter);
-                temp=scanf("%ug",&start_counter);
+                printf("please int the start_counter(%lu):",start_counter);
+                temp=scanf("%lu",&start_counter);
                 uint64_t total=cycle;
 
                 uint64_t hz_timer = rte_get_timer_hz();
