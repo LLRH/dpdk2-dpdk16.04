@@ -301,7 +301,20 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
     int ret = 0;
 
     struct ether_hdr eth_hdr;
-    ret = pktgen_ctor_ether_header(&eth_hdr, m);
+    //ret = pktgen_ctor_ether_header(&eth_hdr, m);
+    //struct ether_hdr *ether_header = eth;
+    int i;
+    uint8_t addr1[6] = {00, 0x16, 0x31, 0xfe, 0xe6, 0x90};
+    uint8_t addr2[6] = {00, 0x16, 0x31, 0xfe, 0xe6, 0x91};
+    for (i = 0; i < 6; i++) {
+        eth_hdr.d_addr.addr_bytes[i] = addr2[i];
+    }
+    for (i = 0; i < 6; i++) {
+        eth_hdr.s_addr.addr_bytes[i] = addr1[i];
+    }
+    eth_hdr.ether_type = 0x0008;
+    memcpy(rte_pktmbuf_mtod_offset(m,struct ether_hdr*,0),&eth_hdr, sizeof(struct ether_hdr));
+    ret += sizeof(struct ether_hdr);
 
     struct ipv4_hdr ipv4_hdr;
     ret += pktgen_ctor_ip_header(&ipv4_hdr, m, TYPE_CONTROL);
