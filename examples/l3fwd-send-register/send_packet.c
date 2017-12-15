@@ -300,24 +300,31 @@ void inline send_register_batch(uint8_t portid, struct rte_mbuf *mbuf, unsigned 
 
     int ret = 0;
 
+    //TODO:MAC部分
     struct ether_hdr eth_hdr;
-    //ret = pktgen_ctor_ether_header(&eth_hdr, m);
-    //struct ether_hdr *ether_header = eth;
     int i;
     uint8_t addr1[6] = {00, 0x16, 0x31, 0xfe, 0xe6, 0x90};
     uint8_t addr2[6] = {00, 0x16, 0x31, 0xfe, 0xe6, 0x91};
-    for (i = 0; i < 6; i++) {
-        eth_hdr.d_addr.addr_bytes[i] = addr2[i];
-    }
-    for (i = 0; i < 6; i++) {
-        eth_hdr.s_addr.addr_bytes[i] = addr1[i];
-    }
+    for (i = 0; i < 6; i++) { eth_hdr.d_addr.addr_bytes[i] = addr2[i]; }
+    for (i = 0; i < 6; i++) { eth_hdr.s_addr.addr_bytes[i] = addr1[i]; }
     eth_hdr.ether_type = 0x0008;
     memcpy(rte_pktmbuf_mtod_offset(m,struct ether_hdr*,0),&eth_hdr, sizeof(struct ether_hdr));
     ret += sizeof(struct ether_hdr);
 
-    struct ipv4_hdr ipv4_hdr;
-    ret += pktgen_ctor_ip_header(&ipv4_hdr, m, TYPE_CONTROL);
+    //TODO:IPv4部分
+    struct ipv4_hdr ip_header;
+    ip_header.version_ihl = 0x45;
+    ip_header.type_of_service = 0;
+    ip_header.total_length = 0;
+    ip_header.packet_id = 0;
+    ip_header.fragment_offset = 0;
+    ip_header.time_to_live = 4;
+    ip_header.next_proto_id = TYPE_CONTROL;
+    ip_header.hdr_checksum = 0;
+    ip_header.src_addr = htonl(IPv4(192, 168, 1, 2));
+    ip_header.dst_addr = htonl(IPv4(192, 168, 18, 24));
+    memcpy(rte_pktmbuf_mtod_offset(m,struct ipv4_hdr*,sizeof(struct ether_hdr)),&ip_header, sizeof(struct ipv4_hdr));
+    ret += sizeof(struct ipv4_hdr);
 
     ret += pktgen_ctor_control_public_header(m);
     ret += pktgen_ctor_register(m,type);
