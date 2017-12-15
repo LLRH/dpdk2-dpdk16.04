@@ -731,10 +731,11 @@ void *thread_CMD(void *arg)
 		switch(command_flag){
             case 10:{
                 printf("please input the number:");
-                int temp=scanf("%u",& batch_cycle);
                 extern uint64_t start_counter;
                 printf("please int the start_counter(%u):",start_counter);
                 temp=scanf("%ug",&start_counter);
+                int temp=scanf("%u",& batch_cycle);
+
                 int total=batch_cycle;
 
                 uint64_t hz_timer = rte_get_timer_hz();
@@ -745,6 +746,7 @@ void *thread_CMD(void *arg)
                     //TODO：在这里发送存在多线程竞争的问题！！
                     //send_register_batch(0,&mybuf,lcore_id,REGISTER_TYPE_ADD,10);
                     print(total-batch_cycle,total);
+                    usleep(1000);
                 }
                 printf("\n");
 
