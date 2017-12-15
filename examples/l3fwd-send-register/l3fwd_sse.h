@@ -396,7 +396,7 @@ send_packetsx4(struct lcore_conf *qconf, uint8_t port, struct rte_mbuf *m[],
 /**
  * Send packets burst from pkts_burst to the ports in dst_port array
  */
-static inline __attribute__((always_inline)) void
+inline __attribute__((always_inline)) void
 send_packets_multi(struct lcore_conf *qconf, struct rte_mbuf **pkts_burst,
 		uint16_t dst_port[MAX_PKT_BURST], int nb_rx)
 {
