@@ -65,7 +65,7 @@ fi
 #Two port
 #./app/app/x86_64-native-linuxapp-gcc/pktgen -c 0x1f -n 3 -- -P -m "1.0,2.1"
 
-./app/app/x86_64-native-linuxapp-gcc/pktgen -c 0x1f -n 3   -- -P -m "[1:3].0, [2:4].1"  -f test/set_seq_wxb.pkt
+./app/app/x86_64-native-linuxapp-gcc/pktgen -c 0x1f -n 3   -- -P -m "[1:2].0, [3:4].1"  -f test/set_seq_wxb.pkt
 #./app/app/x86_64-native-linuxapp-gcc/pktgen -c 0x1f -n 1 --proc-type auto --socket-mem 2048 --file-prefix pg -- -p 0x3 -P -m "[1:3].0, [2:4].1"  -f test/set_seq_wxb.pkt
 
 
